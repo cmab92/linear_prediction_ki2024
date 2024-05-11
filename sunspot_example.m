@@ -27,13 +27,13 @@ U_spca_weighted = U*sqrt(val);
 %% estimate LRR
 lrr_spca = estimate_lrr(Ur);
 %% prediction
-[~, ts_complete_spca] = predict_ts(x_train, lrr_spca, test_length);
+[pred_spca, ~] = predict_ts(x_train, lrr_spca, test_length);
 %% figure 1
 figure(1)
 subplot(1,2,1)
 plot(lrr_spca, 'Displayname', 'sPCA', 'color', 'r'), hold on;
 subplot(1,2,2)
-plot(time, ts_complete_spca, 'Displayname', 'sPCA', 'color', 'r'), hold on;
+plot(test_time, pred_spca, 'Displayname', 'sPCA', 'color', 'r'), hold on;
 %% figure 2
 figure(2)
 subplot(1,4,1)
@@ -47,7 +47,7 @@ X = hankel(x_train(1:L), x_train(L:end));
 threshold = optimal_SVHT_coef(L/(2*L-1), 0)*median(diag(S));
 Ur_ssa = U(:, diag(S)>threshold);
 %% frame projection
-ssa_proj = ssa_projection(x_train, Ur_ssa);
+ssa_proj = ssa_projection(x_train, Ur_ssa);                                % SSA, following [6]
 % basic_ssa_rec = basic_ssa(x_train, L, 1:sum(diag(S)>threshold));         % vanilla SSA 
 %% estimate LRR
 lrr_ssa = estimate_lrr(Ur_ssa);
